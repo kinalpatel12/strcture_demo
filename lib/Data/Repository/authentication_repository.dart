@@ -32,4 +32,19 @@ class AuthenticationRepository {
       throw FormatException('Invalid JSON format');
     }
   }
+
+  Future<List<SearchModel>> searchApiCall() async {
+    try {
+      var jsonData = await apiManager.getAPICall(url: '${baseUrl}');
+      if (jsonData is List<dynamic>) {
+        return jsonData.map((item) => SearchModel.fromJson(item)).toList();
+      } else {
+        throw Exception('Unexpected JSON structure. Expected a list.');
+      }
+    } catch (e) {
+      // Handle exceptions, log errors, or rethrow if needed
+      print('Error in itemsApiCall: $e');
+      throw e; // Rethrow the exception to propagate it
+    }
+  }
 }
